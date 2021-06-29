@@ -1,5 +1,8 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
  
 using ll = long long;
 using pii = pair<int,int>;
@@ -30,14 +33,29 @@ const int MOD = 1e9+7;
 const ll INF = 1e18; // not too close to LLONG_MAX
 mt19937 rng((uint32_t)chrono::steady_clock::now().time_since_epoch().count()); 
 template<class T> using pqg = priority_queue<T,vector<T>,greater<T>>;
+template<typename T> using ordered_set = 
+tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 const int maxN = 200000;
 int main() {
-	cin.tie(0)->sync_with_stdio(0);
+    cin.tie(0)->sync_with_stdio(0);
+    // value: 2 5 1 4 8 3 2 5
+    // index: 1 2 3 4 5 6 7 8
+    //   ans: 0 1 0 3 4 3 3 7
+    stack<array<int,2>> S;
     int n;
     cin >> n;
     for (int i = 0; i < n; i++) {
-        ;
+        int x;
+        cin >> x;
+        while (!S.empty() && x <= S.top()[0])
+            S.pop();
+        
+        if (S.empty())
+            cout << 0 << ' ';
+        else
+            cout << S.top()[1] << ' ';
+        S.push({x, i+1});
     }
     return 0;
 }
