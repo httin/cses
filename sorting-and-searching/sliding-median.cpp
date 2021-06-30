@@ -39,27 +39,7 @@ tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 const int maxN = 200001;
 int x[maxN];
 
-void solve2() {
-    int n,k;
-    cin >> n >> k;
-    ordered_set<array<int,2>> os;
-    for (int i = 1; i <= n; i++) {
-        cin >> x[i];
-        os.insert({x[i],i});
-        if (os.size() > (size_t)k) {
-            int order = os.order_of_key({x[i - k], i - k});
-            auto it = os.find_by_order(order);
-            os.erase(it);
-        }
-        if (os.size() == (size_t)k) {
-            auto it = os.find_by_order((k-1)/2);
-            cout << (*it)[0] << ' ';
-        }
-    }
-}
-
-int main() {
-    cin.tie(0)->sync_with_stdio(0);
+void solve() {
     int n,k;
     cin >> n >> k;
     for (int i = 0; i < n; i++)
@@ -67,12 +47,12 @@ int main() {
     if (k == 1) {
         for (int i = 0; i < n; i++)
             cout << x[i] << ' ';
-        return 0;
+        return;
     }
     if (k == 2) {
         for (int i = 0; i < n-1; i++)
             cout << min(x[i], x[i+1]) << ' ';
-        return 0;
+        return;
     }
     vector<array<int,2>> copy(k);
     for (int i = 0; i < k; i++)
@@ -85,6 +65,7 @@ int main() {
     for (int i = (k+1)/2; i < k; i++)
         right.insert(copy[i]);
     cout << (*left.rbegin())[0] << ' ';
+    
     for (int i = k; i < n; i++) {
         if (left.count({x[i-k], i-k}))
             left.erase({x[i-k], i-k});
@@ -110,6 +91,28 @@ int main() {
         }
         cout << (*left.rbegin())[0] << ' ';
     }
+}
+
+void solve2() {
+    int n,k;
+    cin >> n >> k;
+    ordered_set<array<int,2>> os;
+    for (int i = 1; i <= n; i++) {
+        cin >> x[i];
+        os.insert({x[i],i});
+        if (os.size() > (size_t)k)
+            os.erase({x[i - k], i - k});
+        
+        if (os.size() == (size_t)k) {
+            auto it = os.find_by_order((k-1)/2);
+            cout << (*it)[0] << ' ';
+        }
+    }
+}
+
+int main() {
+    cin.tie(0)->sync_with_stdio(0);
+    solve2();
     return 0;
 }
 
